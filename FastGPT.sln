@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastGPT", "FastGPT\FastGPT.csproj", "{71015BD7-D04A-4C8A-82AD-10A6BF47076E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastGPT_Tests", "FastGPT_Tests\FastGPT_Tests.csproj", "{BEAEB367-7796-43F5-AC2D-CC4CB7924085}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FasGPT_Console_Test", "FasGPT_Console_Test\FasGPT_Console_Test.csproj", "{DBFFFFC3-8672-4218-8EB2-06C8A055B5BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71015BD7-D04A-4C8A-82AD-10A6BF47076E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71015BD7-D04A-4C8A-82AD-10A6BF47076E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71015BD7-D04A-4C8A-82AD-10A6BF47076E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71015BD7-D04A-4C8A-82AD-10A6BF47076E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEAEB367-7796-43F5-AC2D-CC4CB7924085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEAEB367-7796-43F5-AC2D-CC4CB7924085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEAEB367-7796-43F5-AC2D-CC4CB7924085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEAEB367-7796-43F5-AC2D-CC4CB7924085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBFFFFC3-8672-4218-8EB2-06C8A055B5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBFFFFC3-8672-4218-8EB2-06C8A055B5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBFFFFC3-8672-4218-8EB2-06C8A055B5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBFFFFC3-8672-4218-8EB2-06C8A055B5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41BD1771-4D6B-4DE5-8901-8FAC95A0ACD6}
+	EndGlobalSection
+EndGlobal

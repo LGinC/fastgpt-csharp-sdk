@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FasGPT_Console_Test": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
