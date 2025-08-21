@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
-namespace FastGPT.Dto
+namespace FastGPT.Dto.Chat
 {
     /// <summary>
     /// 流式对话请求
@@ -13,7 +13,7 @@ namespace FastGPT.Dto
     /// <param name="Variables">模块变量，会替换模块中，输入框内容里的[key]</param>
     [Description("流式对话请求")]
     public record ChatStreamRequest(
-        [property: Description("消息列表")] List<ChatMessage> Messages,
+        [property: Description("消息列表")] List<ChatMessage>? Messages,
         [property: Description("对话id")] string? ChatId = null,
         [property: Description("是否返回中间值")] bool Detail = false,
         [property: Description("变量列表")] Dictionary<string, object>? Variables = null,
@@ -26,14 +26,14 @@ namespace FastGPT.Dto
     /// <summary>
     /// 非流式对话请求
     /// </summary>
-    /// <param name="Messages">消息列表</param>
+    /// <param name="Messages">消息列表, 当为插件请求时不传</param>
     /// <param name="ChatId">对话id，为空时不使用 FastGpt 提供的上下文功能，完全通过传入的 messages 构建上下文
     /// <para>不为空时意味着使用 chatId 进行对话，自动从 FastGpt 数据库取历史记录，并使用 messages数组最后一个内容作为用户问题，其余 message 会被忽略。请自行确保 chatId唯一，长度小于250，通常可以是自己系统的对话框ID</para> </param>
     /// <param name="Detail">是否返回中间值 （模块状态，响应的完整结果等）,stream模式下会通过event进行区分</param>
     /// <param name="ResponseChatItemId">如果传入，则会将该值作为本次对话的响应消息的 ID，FastGPT会自动将该 ID 存入数据库。请确保，在当前chatId下，responseChatItemId是唯一的</param>
     /// <param name="Variables">模块变量，会替换模块中，输入框内容里的[key]</param>
     public sealed record ChatNoneStreamRequest(
-        List<ChatMessage> Messages,
+        List<ChatMessage>? Messages,
         string? ChatId = null,
         bool Detail = false,
         Dictionary<string, object>? Variables = null,
@@ -60,7 +60,7 @@ namespace FastGPT.Dto
     /// </summary>
     /// <param name="Role">角色</param>
     /// <param name="Content">内容</param>
-    public record ChatContentMessage(ContentItem Content, string Role = "user" ) : ChatMessage(Role);
+    public record ChatContentMessage(ContentItem[] Content, string Role = "user" ) : ChatMessage(Role);
 
     /// <summary>
     /// 复杂内容
@@ -117,7 +117,7 @@ namespace FastGPT.Dto
         public static ContentItem FromFile(string fileName, string fileUrl) =>
             new()
             {
-                Type = "file",
+                Type = "file_url",
                 Name = fileName,
                 Url = fileUrl,
             };

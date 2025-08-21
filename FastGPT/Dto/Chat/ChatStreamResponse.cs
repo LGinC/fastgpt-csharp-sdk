@@ -1,5 +1,4 @@
-
-namespace FastGPT.Dto
+namespace FastGPT.Dto.Chat
 {
     /// <summary>
     /// 聊天流式响应数据传输对象

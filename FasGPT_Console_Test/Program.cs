@@ -1,40 +1,16 @@
 using FastGPT;
 using FastGPT.Dto;
+using FastGPT.Dto.Chat;
+using FastGPT.Options;
+using FastGPT.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
-using System.Net.ServerSentEvents;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using WebApiClientCore.Extensions.OAuths;
 
 IHostBuilder builder = Host.CreateDefaultBuilder(args);
 builder.ConfigureServices((context, services) =>
 {
-    services.AddTokenProvider<IFastGPTApi>(s =>
-     {
-         //var apiKey = s.GetRequiredService<DifyAIOptions>().DefaultApiKey;
-         var apiKey = context.Configuration["FastGPT_ApiKey"];
-         return Task.FromResult<TokenResult?>(new TokenResult { Access_token = apiKey });
-     });
-    services.AddHttpApi<IChatApi>()
-    .ConfigureHttpApi(o =>
-    {
-        var host = context.Configuration["FastGPT_Host"];
-        o.HttpHost = new Uri($"{context.Configuration["FastGPT_Host"]}/api/");
-        o.UseLogging = true;
-    });
-    services.AddWebApiClient().ConfigureHttpApi(o =>
-    {
-        o.JsonSerializeOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        o.JsonDeserializeOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        o.KeyValueSerializeOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        o.JsonSerializeOptions.Converters.Add(new ChatMessageConverter());
-
-        o.JsonSerializeOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
-
-    services.AddScoped<ChatService>();
+    services.AddFastGPT(context.Configuration);
 });
 
 var app = builder.Build();
@@ -54,24 +30,31 @@ using (var scope = app.Services.CreateScope())
         // 测试生成会话ID
         var chatId = ChatService.GenerateChatId();
         Console.WriteLine($"Generated Chat ID: {chatId}");
-        
+        var appName = "测试";
+
+        var historyResult = await chatService.GetHistoriesAsync(appName, 0, 20);
+        await chatService.UpdateHistoryAsync(appName, historyResult.Data!.List[0].ChatId, "自定义标题");
+
+
+        return;
+
         // 测试文本消息流式对话
         Console.WriteLine("\n=== 测试文本消息流式对话 ===");
-        await foreach (var item in chatService.ChatStreamAsync("你好，请介绍一下自己", chatId))
+        await foreach (var item in chatService.ChatStreamAsync(appName, "你好，请介绍一下自己", chatId))
         {
             Console.WriteLine($"Event: {item.EventType}, Data: {JsonSerializer.Serialize(item.Data, FastGptJsonOptions.Options)}");
         }
         
         // 测试图片消息流式对话
         Console.WriteLine("\n=== 测试图片消息流式对话 ===");
-        await foreach (var item in chatService.ChatStreamWithImageAsync("https://example.com/image.jpg", chatId))
+        await foreach (var item in chatService.ChatStreamWithImageAsync(appName, "https://example.com/image.jpg", chatId))
         {
             Console.WriteLine($"Event: {item.EventType}, Data: {JsonSerializer.Serialize(item.Data, FastGptJsonOptions.Options)}");
         }
         
         // 测试文件消息流式对话
         Console.WriteLine("\n=== 测试文件消息流式对话 ===");
-        await foreach (var item in chatService.ChatStreamWithFileAsync("test.pdf", "https://example.com/test.pdf", chatId))
+        await foreach (var item in chatService.ChatStreamWithFileAsync(appName, "test.pdf", "https://example.com/test.pdf", chatId))
         {
             Console.WriteLine($"Event: {item.EventType}, Data: {JsonSerializer.Serialize(item.Data, FastGptJsonOptions.Options)}");
         }
@@ -90,7 +73,7 @@ using (var scope = app.Services.CreateScope())
                 ]
             }
         };
-        await foreach (var item in chatService.ChatStreamInteractiveAsync(selectInteractive, chatId, "选项1", new Dictionary<string, object>()))
+        await foreach (var item in chatService.ChatStreamInteractiveAsync(appName, selectInteractive, chatId, "选项1", new Dictionary<string, object>()))
         {
             Console.WriteLine($"Event: {item.EventType}, Data: {JsonSerializer.Serialize(item.Data, FastGptJsonOptions.Options)}");
         }

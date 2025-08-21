@@ -1,4 +1,4 @@
-﻿using FastGPT.Dto;
+﻿using FastGPT.Dto.Chat;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

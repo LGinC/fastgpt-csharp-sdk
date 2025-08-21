@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace FastGPT.Dto
+namespace FastGPT.Dto.Chat
 {
     /// <summary>
     /// 聊天响应
